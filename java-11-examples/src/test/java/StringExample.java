@@ -26,7 +26,7 @@ class StringExample {
     }
 
     @Test
-    void empty_string_still_empty_after_repeat(){
+    void empty_string_still_empty_after_repeat() {
         var emptyString = "";
         final String result = emptyString.repeat(Integer.MAX_VALUE);
         Assertions.assertEquals("", result);
@@ -44,8 +44,10 @@ class StringExample {
         Assertions.assertFalse(blankString.isBlank());
     }
 
-    private static void toStrip() {
-        final var toStrip = "   toStrip   ";
-        System.out.println(toStrip.strip());
+    @Test
+    void strip_remove_surrounding_spaces() {
+        final var toStrip = "   to strip   ";
+        final String stripped = toStrip.strip();
+        Assertions.assertEquals("to strip", stripped);
     }
 }
