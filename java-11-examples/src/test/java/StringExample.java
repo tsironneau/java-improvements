@@ -2,6 +2,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @DisplayName("Some tests to experience Java 11 String Methods")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StringExample {
@@ -45,9 +48,38 @@ class StringExample {
     }
 
     @Test
-    void strip_remove_surrounding_spaces() {
-        final var toStrip = "   to strip   ";
+    void strip_removes_surrounding_spaces() {
+        final var toStrip = "   toStrip   ";
         final String stripped = toStrip.strip();
-        Assertions.assertEquals("to strip", stripped);
+        Assertions.assertEquals("toStrip", stripped);
     }
+
+    @Test
+    void stripLeading_removes_only_leading_spaces() {
+        final var toStrip = "    toStrip    ";
+        final String stripped = toStrip.stripLeading();
+        Assertions.assertEquals("toStrip    ", stripped);
+    }
+
+    @Test
+    void stripTrailing_removes_only_trailing_spaces() {
+        final var toStrip = "    toStrip    ";
+        final String stripped = toStrip.stripTrailing();
+        Assertions.assertEquals("    toStrip", stripped);
+    }
+
+    @Test
+    void strip_does_not_remove_middle_spaces() {
+        final var toStrip = "to Str ip";
+        final String stripped = toStrip.strip();
+        Assertions.assertEquals("to Str ip", stripped);
+    }
+
+    @Test
+    void lines_stream_collected_match_list_of(){
+        final String lines = "line_one\nline_two\nline_three";
+        final List<String> linesList = lines.lines().collect(Collectors.toList());
+        Assertions.assertLinesMatch(List.of("line_one", "line_two", "line_three"), linesList);
+    }
+
 }
