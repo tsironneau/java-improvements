@@ -13,5 +13,10 @@
         <module>java-12-examples</module>
     </modules>
 
+    <properties>
+        <junit.version>5.4.2</junit.version>
+    </properties>
+
+
 
 </project>
