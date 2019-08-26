@@ -11,6 +11,7 @@
     <modules>
         <module>java-11-examples</module>
         <module>java-12-examples</module>
+        <module>java-13-examples</module>
     </modules>
 
     <properties>
