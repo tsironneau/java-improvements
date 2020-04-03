@@ -12,12 +12,15 @@
         <module>java-11-examples</module>
         <module>java-12-examples</module>
         <module>java-13-examples</module>
+        <module>java-14-examples</module>
     </modules>
 
     <properties>
-        <junit.version>5.4.2</junit.version>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
+        <junit.version>5.6.1</junit.version>
+        <jqwik-api.version>1.2.4</jqwik-api.version>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
+        <annotations.version>19.0.0</annotations.version>
     </properties>
 
     <build>
