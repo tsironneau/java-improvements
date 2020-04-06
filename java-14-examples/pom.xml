@@ -12,11 +12,6 @@
 
     <artifactId>java-14-examples</artifactId>
 
-    <properties>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -24,9 +19,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version>
                 <configuration>
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
+                    <compilerArgs>--enable-preview
                     </compilerArgs>
+                    <source>14</source>
+                    <target>14</target>
                 </configuration>
             </plugin>
         </plugins>
