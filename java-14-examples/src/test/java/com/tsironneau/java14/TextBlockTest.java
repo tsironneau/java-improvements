@@ -1,3 +1,5 @@
+package com.tsironneau.java14;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -5,6 +7,7 @@ public class TextBlockTest {
 
     @Test
     void new_backslash_escape_sequence_removes_end_line_character() {
+
         final String textBlock = """
                 This is a text block \
                 with an end line character.""";
@@ -15,6 +18,7 @@ public class TextBlockTest {
 
     @Test
     void new_backslash_s_sequence_keep_space_at_end_of_line() {
+
         final String spaceRemovedAsTextBlock = """
                 This is a text block with a space 
                 removed at end of line""";

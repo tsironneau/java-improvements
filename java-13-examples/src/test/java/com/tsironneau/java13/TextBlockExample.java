@@ -1,3 +1,5 @@
+package com.tsironneau.java13;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -9,11 +11,12 @@ class TextBlockExample {
 
     @Test
     void simple_print() {
+
         String simpleTextBlock ="""
-            Hello, World
-            This is a new line
-                This one with indentation
-            \tThis one too with indentation\rThen another new line""";
+                Hello, World
+                This is a new line
+                    This one with indentation
+                \tThis one too with indentation\rThen another new line""";
         System.out.println(simpleTextBlock);
     }
 
