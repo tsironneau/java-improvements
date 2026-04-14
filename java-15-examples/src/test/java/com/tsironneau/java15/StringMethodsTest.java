@@ -2,7 +2,6 @@ package com.tsironneau.java15;
 
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
-import net.jqwik.api.constraints.IntRange;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -23,7 +22,7 @@ class StringMethodsTest {
     @Property
     void formatted_is_equivalent_to_String_format(
             @ForAll String name,
-            @ForAll @IntRange(min = 0, max = 150) int age) {
+            @ForAll int age) {
         String template = "%s is %d years old";
         assertEquals(String.format(template, name, age), template.formatted(name, age));
     }
