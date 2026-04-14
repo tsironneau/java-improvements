@@ -1,33 +1,29 @@
 package com.tsironneau.java15;
 
-import net.jqwik.api.Arbitrary;
-import net.jqwik.api.Arbitraries;
-import net.jqwik.api.Combinators;
-import net.jqwik.api.ForAll;
-import net.jqwik.api.Property;
-import net.jqwik.api.Provide;
+import net.jqwik.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SealedClassPropertyTest {
 
+    @SuppressWarnings("unchecked")
     @Provide
     Arbitrary<Racer> racers() {
         Arbitrary<Mario> marios =
-            Combinators.combine(
-                Arbitraries.integers().between(1, 10),
-                Arbitraries.integers().between(1, 10)
-            ).as(Mario::new);
+                Combinators.combine(
+                        Arbitraries.integers().between(1, 10),
+                        Arbitraries.integers().between(1, 10)
+                ).as(Mario::new);
 
         Arbitrary<Bowser> bowsers =
-            Combinators.combine(
-                Arbitraries.integers().between(1, 10),
-                Arbitraries.integers().between(1, 10)
-            ).as(Bowser::new);
+                Combinators.combine(
+                        Arbitraries.integers().between(1, 10),
+                        Arbitraries.integers().between(1, 10)
+                ).as(Bowser::new);
 
         Arbitrary<ToadWithMushroom> toads =
-            Arbitraries.integers().between(1, 10).map(ToadWithMushroom::new);
+                Arbitraries.integers().between(1, 10).map(ToadWithMushroom::new);
 
         return Arbitraries.oneOf(marios, bowsers, toads);
     }
@@ -42,6 +38,7 @@ class SealedClassPropertyTest {
         assertTrue(racer.acceleration() > 0);
     }
 
+    @SuppressWarnings("unused")
     @Property
     void switch_over_racer_returns_correct_category(@ForAll("racers") Racer racer) {
         RacerCategory category = switch (racer) {
@@ -60,8 +57,8 @@ class SealedClassPropertyTest {
     @Provide
     Arbitrary<Bowser> heavyBowsers() {
         return Combinators.combine(
-            Arbitraries.integers().between(3, 10),
-            Arbitraries.integers().between(2, 10)
+                Arbitraries.integers().between(3, 10),
+                Arbitraries.integers().between(2, 10)
         ).as(Bowser::new);
     }
 }
