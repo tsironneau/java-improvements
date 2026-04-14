@@ -7,7 +7,7 @@ public record Bowser(int speed, int weight) implements Racer {
     }
 
     @Override
-    public String category() {
-        return "heavy";
+    public RacerCategory category() {
+        return RacerCategory.HEAVY;
     }
 }

@@ -44,13 +44,12 @@ class SealedClassPropertyTest {
 
     @Property
     void switch_over_racer_returns_correct_category(@ForAll("racers") Racer racer) {
-        String category = switch (racer) {
-            case Mario m -> "balanced";
-            case Bowser b -> "heavy";
-            case Toad t -> "light";
+        RacerCategory category = switch (racer) {
+            case Mario m -> RacerCategory.BALANCED;
+            case Bowser b -> RacerCategory.HEAVY;
+            case Toad t -> RacerCategory.LIGHT;
         };
         assertNotNull(category);
-        assertTrue(category.length() > 0);
     }
 
     @Property

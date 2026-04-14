@@ -56,7 +56,7 @@ class SealedClassTest {
     void toad_with_mushroom_has_boosted_speed() {
         ToadWithMushroom toad = new ToadWithMushroom(3);
         assertEquals(5, toad.speed()); // 3 + 2 boost
-        assertEquals("light", toad.category());
+        assertEquals(RacerCategory.LIGHT, toad.category());
     }
 
     @Test
