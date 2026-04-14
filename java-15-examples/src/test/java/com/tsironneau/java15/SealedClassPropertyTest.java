@@ -1,7 +1,7 @@
 package com.tsironneau.java15;
 
 import net.jqwik.api.*;
-import net.jqwik.api.constraints.IntRange;
+import net.jqwik.api.constraints.Positive;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 
@@ -16,30 +16,30 @@ class SealedClassPropertyTest {
     Arbitrary<Racer> racers() {
         Arbitrary<Mario> marios =
                 Combinators.combine(
-                        Arbitraries.integers().between(1, 10),
-                        Arbitraries.integers().between(1, 10)
+                        Arbitraries.integers().greaterOrEqual(1),
+                        Arbitraries.integers().greaterOrEqual(1)
                 ).as(Mario::new);
 
         Arbitrary<Bowser> bowsers =
                 Combinators.combine(
-                        Arbitraries.integers().between(1, 10),
-                        Arbitraries.integers().between(1, 10)
+                        Arbitraries.integers().greaterOrEqual(1),
+                        Arbitraries.integers()
                 ).as(Bowser::new);
 
         Arbitrary<ToadWithMushroom> toads =
-                Arbitraries.integers().between(1, 10).map(ToadWithMushroom::new);
+                Arbitraries.integers().map(ToadWithMushroom::new);
 
         return Arbitraries.oneOf(marios, bowsers, toads);
     }
 
     @Property
-    void speed_is_always_positive_for_any_racer(@ForAll("racers") Racer racer) {
-        assertTrue(racer.speed() > 0);
+    void mario_speed_matches_constructor_argument(@ForAll @Positive int speed, @ForAll @Positive int acceleration) {
+        assertTrue(new Mario(speed, acceleration).speed() > 0);
     }
 
     @Property
-    void acceleration_is_always_positive_for_any_racer(@ForAll("racers") Racer racer) {
-        assertTrue(racer.acceleration() > 0);
+    void bowser_acceleration_is_always_at_least_one(@ForAll int weight) {
+        assertTrue(new Bowser(1, weight).acceleration() >= 1);
     }
 
     @Property
@@ -53,7 +53,7 @@ class SealedClassPropertyTest {
     }
 
     @Property
-    void heavier_bowser_has_lower_or_equal_acceleration(@ForAll @IntRange(min = 1, max = 9) int weight) {
+    void heavier_bowser_has_lower_or_equal_acceleration(@ForAll @Positive int weight) {
         Bowser lighter = new Bowser(5, weight);
         Bowser heavier = new Bowser(5, weight + 1);
         assertTrue(lighter.acceleration() >= heavier.acceleration());
