@@ -24,9 +24,8 @@ class SealedClassTest {
     }
 
     @Test
-    void mario_and_bowser_are_records() {
+    void mario_exposes_record_components() {
         Racer mario = new Mario(4, 4);
-        Racer bowser = new Bowser(5, 5);
 
         if (mario instanceof Mario m) {
             assertEquals(4, m.speed());
@@ -34,6 +33,11 @@ class SealedClassTest {
         } else {
             fail("Mario should be an instance of Mario record");
         }
+    }
+
+    @Test
+    void bowser_exposes_record_components() {
+        Racer bowser = new Bowser(5, 5);
 
         if (bowser instanceof Bowser b) {
             assertEquals(5, b.speed());

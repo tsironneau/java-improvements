@@ -1,6 +1,7 @@
 package com.tsironneau.java15;
 
 public final class ToadWithMushroom extends Toad {
+    private static final int MUSHROOM_BOOST = 2;
     private final int baseSpeed;
 
     public ToadWithMushroom(int baseSpeed) {
@@ -9,7 +10,7 @@ public final class ToadWithMushroom extends Toad {
 
     @Override
     public int speed() {
-        return baseSpeed + 2;
+        return baseSpeed + MUSHROOM_BOOST;
     }
 
     @Override
