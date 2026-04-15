@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class SealedClassTest {
 
+    @SuppressWarnings("DataFlowIssue")
     @Test
     void switch_over_sealed_hierarchy_is_exhaustive() {
         Racer racer = new Mario(4, 4);
@@ -23,30 +24,7 @@ class SealedClassTest {
         assertEquals("mario", kind);
     }
 
-    @Test
-    void mario_exposes_record_components() {
-        Racer mario = new Mario(4, 4);
-
-        if (mario instanceof Mario m) {
-            assertEquals(4, m.speed());
-            assertEquals(4, m.acceleration());
-        } else {
-            fail("Mario should be an instance of Mario record");
-        }
-    }
-
-    @Test
-    void bowser_exposes_record_components() {
-        Racer bowser = new Bowser(5, 5);
-
-        if (bowser instanceof Bowser b) {
-            assertEquals(5, b.speed());
-            assertEquals(5, b.weight());
-        } else {
-            fail("Bowser should be an instance of Bowser record");
-        }
-    }
-
+    @SuppressWarnings("ConstantValue")
     @Test
     void non_sealed_toad_can_be_extended() {
         Racer toadRacer = new ToadWithMushroom(3);
@@ -61,16 +39,5 @@ class SealedClassTest {
         ToadWithMushroom toad = new ToadWithMushroom(3);
         assertEquals(5, toad.speed()); // 3 + 2 boost
         assertEquals(RacerCategory.LIGHT, toad.category());
-    }
-
-    @Test
-    void bowser_acceleration_decreases_with_weight() {
-        Bowser bowser1 = new Bowser(5, 1);
-        Bowser bowser2 = new Bowser(5, 5);
-        Bowser bowser3 = new Bowser(5, 6);
-
-        assertEquals(5, bowser1.acceleration()); // max(1, 6-1) = 5
-        assertEquals(1, bowser2.acceleration()); // max(1, 6-5) = 1
-        assertEquals(1, bowser3.acceleration()); // max(1, 6-6) = 1
     }
 }

@@ -36,14 +36,22 @@ class StringMethodsTest {
 
     @Test
     void stripIndent_removes_common_leading_whitespace() {
-        String raw = "    hello\n    world\n    test";
+        String raw = """
+                    hello
+                    world
+                    test\
+                """;
         String expected = "hello\nworld\ntest";
         assertEquals(expected, raw.stripIndent());
     }
 
     @Test
     void stripIndent_preserves_relative_indentation() {
-        String raw = "    line1\n      line2 with extra indent\n    line3";
+        String raw = """
+                    line1
+                      line2 with extra indent
+                    line3\
+                """;
         String result = raw.stripIndent();
         // Common indent (4 spaces) is removed, but relative indent (2 extra on line2) remains
         assertTrue(result.contains("  line2"));

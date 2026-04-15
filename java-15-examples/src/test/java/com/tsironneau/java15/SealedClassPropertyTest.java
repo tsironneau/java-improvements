@@ -2,6 +2,7 @@ package com.tsironneau.java15;
 
 import net.jqwik.api.*;
 import net.jqwik.api.constraints.Positive;
+import net.jqwik.api.constraints.UseType;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 
@@ -11,25 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class SealedClassPropertyTest {
 
-    @SuppressWarnings("unchecked")
     @Provide
     Arbitrary<Racer> racers() {
-        Arbitrary<Mario> marios =
-                Combinators.combine(
-                        Arbitraries.integers().greaterOrEqual(1),
-                        Arbitraries.integers().greaterOrEqual(1)
-                ).as(Mario::new);
-
-        Arbitrary<Bowser> bowsers =
-                Combinators.combine(
-                        Arbitraries.integers().greaterOrEqual(1),
-                        Arbitraries.integers()
-                ).as(Bowser::new);
-
-        Arbitrary<ToadWithMushroom> toads =
-                Arbitraries.integers().map(ToadWithMushroom::new);
-
-        return Arbitraries.oneOf(marios, bowsers, toads);
+        return Arbitraries.oneOf(
+                Arbitraries.forType(Mario.class),
+                Arbitraries.forType(Bowser.class),
+                Arbitraries.forType(ToadWithMushroom.class)
+        );
     }
 
     @Property
