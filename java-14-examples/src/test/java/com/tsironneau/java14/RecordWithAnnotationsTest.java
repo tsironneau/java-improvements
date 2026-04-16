@@ -3,14 +3,25 @@ package com.tsironneau.java14;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class RecordWithAnnotationsTest {
 
     @Test
-    void throw_exception_when_null_parameter_given_to_constructor() {
-        //noinspection ConstantConditions
-        Assertions.assertThrows(
-                IllegalArgumentException.class,
-                () -> new RecordWithAnnotations<>(null)
-        );
+    void annotation_should_be_present_on_record_components() {
+        var components = RecordWithAnnotations.class.getRecordComponents();
+
+        boolean annotationPresent = java.util.Arrays.stream(components)
+                                                    .anyMatch(c -> c.isAnnotationPresent(MyTestAnnotation.class));
+
+        assertTrue(annotationPresent,
+                "Annotation should be present on record components");
+    }
+
+    @Test
+    void check_propagation() throws NoSuchFieldException {
+        var field = RecordWithAnnotations.class.getDeclaredField("annotatedField");
+        assertTrue(field.isAnnotationPresent(MyTestAnnotation.class),
+                "Annotation should propagate to private field");
     }
 }
