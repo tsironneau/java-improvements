@@ -1,0 +1,67 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '**/*.java'
+      - '**/pom.xml'
+      - '.mvn/**'
+
+jobs:
+  validate:
+    name: Build, Test & Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Build (skip tests)
+        run: mvn clean package -DskipTests
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: '**/target/surefire-reports/*.xml'
+          retention-days: 14
+
+      - name: Check coverage (≥ 90%)
+        run: mvn jacoco:check
+
+      - name: Generate coverage report
+        if: always()
+        id: coverage
+        uses: ./.github/actions/coverage-report
+
+      - name: Comment PR with coverage report
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📊 Code Coverage Report\n\n${{ steps.coverage.outputs.report }}`
+            });
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: '**/target/site/jacoco/'
+          retention-days: 14

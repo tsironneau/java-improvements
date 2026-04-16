@@ -1,0 +1,66 @@
+name: Generate Coverage Report
+description: Generate a code coverage report table from JaCoCo reports
+
+outputs:
+  report:
+    description: The coverage report as markdown table
+    value: ${{ steps.generate.outputs.report }}
+
+runs:
+  using: composite
+  steps:
+    - name: Generate coverage report
+      id: generate
+      shell: python
+      run: |
+        import xml.etree.ElementTree as ET
+        import os
+        import glob
+
+        # Find all modules
+        modules = sorted(glob.glob('java-*-examples'))
+
+        lines = []
+        lines.append("| Module | Coverage | Status |")
+        lines.append("|--------|----------|--------|")
+
+        global_covered = 0
+        global_missed = 0
+
+        for module in modules:
+            report_path = f'{module}/target/site/jacoco/report.xml'
+
+            if os.path.exists(report_path):
+                try:
+                    tree = ET.parse(report_path)
+                    root = tree.getroot()
+
+                    covered = 0
+                    missed = 0
+
+                    for counter in root.findall('.//counter[@type="INSTRUCTION"]'):
+                        covered += int(counter.get('covered', 0))
+                        missed += int(counter.get('missed', 0))
+
+                    if covered + missed > 0:
+                        coverage = 100 * covered / (covered + missed)
+                        status = "✅" if coverage >= 90 else "❌"
+                        lines.append(f"| {module} | {coverage:.1f}% | {status} |")
+
+                        global_covered += covered
+                        global_missed += missed
+                except Exception as e:
+                    lines.append(f"| {module} | Error | ❌ |")
+
+        if global_covered + global_missed > 0:
+            global_coverage = 100 * global_covered / (global_covered + global_missed)
+            global_status = "✅" if global_coverage >= 90 else "❌"
+            lines.append(f"| **Global** | **{global_coverage:.1f}%** | **{global_status}** |")
+
+        report = '\n'.join(lines)
+
+        # Output to GitHub Actions
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"report<<EOF\n{report}\nEOF\n")
+
+        print(report)
