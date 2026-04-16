@@ -25,17 +25,11 @@ public enum Pokemon {
     // Others
     DITTO("Ditto"), MISSING_NO("MissingNo");
 
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private final String displayName;
 
     Pokemon(String displayName) {
         this.displayName = displayName;
     }
 
-    /**
-     * Returns the properly capitalized display name (e.g. "Pikachu", "MissingNo").
-     */
-    @SuppressWarnings("unused")
-    public String displayName() {
-        return displayName;
-    }
 }

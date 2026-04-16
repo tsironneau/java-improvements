@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static com.tsironneau.java16.Pokemon.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class LocalRecordDemoTest {
@@ -51,5 +51,11 @@ class LocalRecordDemoTest {
         List<Pokemon> sorted = LocalRecordDemo.sortEncountersByLevel(
                 List.of(PIKACHU), List.of(25));
         assertEquals(List.of(PIKACHU), sorted);
+    }
+
+    @Test
+    void sorting_throws_when_pokemon_and_levels_sizes_differ() {
+        assertThrows(IllegalArgumentException.class,
+                () -> LocalRecordDemo.sortEncountersByLevel(List.of(PIKACHU), List.of(1, 2)));
     }
 }
