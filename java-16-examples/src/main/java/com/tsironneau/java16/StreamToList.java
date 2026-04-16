@@ -27,6 +27,7 @@ public final class StreamToList {
      * Returns a mutable list using {@code Collectors.toList()} — a trainer's party.
      * The returned list can be freely modified.
      */
+    @SuppressWarnings("SimplifyStreamApiCallChains")
     public static <T> List<T> toMutableList(List<T> source) {
         return source.stream().collect(Collectors.toList());
     }

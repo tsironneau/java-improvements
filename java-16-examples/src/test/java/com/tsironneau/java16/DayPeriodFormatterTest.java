@@ -57,7 +57,8 @@ class DayPeriodFormatterTest {
         LocalTime morning = LocalTime.of(9, 0);
         String english = DayPeriodFormatter.formatDayPeriodForLocale(morning, Locale.ENGLISH);
         String french = DayPeriodFormatter.formatDayPeriodForLocale(morning, Locale.FRENCH);
-        assertNotEquals(english, french, "Day period should vary by locale");
+        assertEquals("du matin", french);
+        assertEquals("in the morning", english);
     }
 
     @Test
