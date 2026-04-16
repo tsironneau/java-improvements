@@ -17,9 +17,14 @@ public class TextBlockTest {
     }
 
     @Test
+    void main_prints_the_text_block_without_throwing() {
+        Assertions.assertDoesNotThrow(() -> TextBlock.main(new String[]{}));
+    }
+
+    @Test
     void new_backslash_s_sequence_keep_space_at_end_of_line() {
 
-        final String spaceRemovedAsTextBlock = """
+        @SuppressWarnings("TrailingWhitespacesInTextBlock") final String spaceRemovedAsTextBlock = """
                 This is a text block with a space 
                 removed at end of line""";
         final String spaceRemovedAsString = "This is a text block with a space\nremoved at end of line";

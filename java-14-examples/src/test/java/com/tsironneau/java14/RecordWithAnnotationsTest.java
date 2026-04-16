@@ -2,6 +2,7 @@ package com.tsironneau.java14;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RecordWithAnnotationsTest {
@@ -22,5 +23,11 @@ class RecordWithAnnotationsTest {
         var field = RecordWithAnnotations.class.getDeclaredField("annotatedField");
         assertTrue(field.isAnnotationPresent(MyTestAnnotation.class),
                 "Annotation should propagate to private field");
+    }
+
+    @Test
+    void accessor_returns_the_value_passed_at_construction() {
+        var record = new RecordWithAnnotations<>("Saitama");
+        assertEquals("Saitama", record.annotatedField());
     }
 }

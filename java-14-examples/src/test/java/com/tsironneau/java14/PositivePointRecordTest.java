@@ -25,4 +25,14 @@ public class PositivePointRecordTest {
         );
     }
 
+    @Property
+    void valid_positive_coordinates_are_accepted(@ForAll() @IntRange() int x, @ForAll() @IntRange() int y) {
+
+        var point = new PositivePoint(x, y);
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(x, point.x()),
+                () -> Assertions.assertEquals(y, point.y())
+        );
+    }
+
 }
