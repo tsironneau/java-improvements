@@ -3,6 +3,8 @@ package com.tsironneau.java16;
 import java.util.List;
 import java.util.Map;
 
+import static com.tsironneau.java16.Pokemon.*;
+
 /**
  * Demonstrates {@code Stream.mapMulti()} introduced in Java 16.
  *
@@ -14,11 +16,11 @@ import java.util.Map;
  */
 public final class StreamMapMulti {
 
-    private static final Map<String, List<String>> EVOLUTION_CHAINS = Map.of(
-            "Eevee", List.of("Vaporeon", "Jolteon", "Flareon", "Espeon", "Umbreon"),
-            "Charmander", List.of("Charmander", "Charmeleon", "Charizard"),
-            "Bulbasaur", List.of("Bulbasaur", "Ivysaur", "Venusaur"),
-            "Squirtle", List.of("Squirtle", "Wartortle", "Blastoise")
+    private static final Map<Pokemon, List<Pokemon>> EVOLUTION_CHAINS = Map.of(
+            EEVEE, List.of(VAPOREON, JOLTEON, FLAREON, ESPEON, UMBREON),
+            CHARMANDER, List.of(CHARMANDER, CHARMELEON, CHARIZARD),
+            BULBASAUR, List.of(BULBASAUR, IVYSAUR, VENUSAUR),
+            SQUIRTLE, List.of(SQUIRTLE, WARTORTLE, BLASTOISE)
     );
 
     private StreamMapMulti() {
@@ -48,10 +50,10 @@ public final class StreamMapMulti {
      * Expands each Pokémon into its full evolution chain using {@code mapMulti}.
      * Unknown Pokémon (not in the evolution map) are dropped.
      */
-    public static List<String> expandEvolutions(List<String> pokemon) {
+    public static List<Pokemon> expandEvolutions(List<Pokemon> pokemon) {
         return pokemon.stream()
-                .<String>mapMulti((name, consumer) -> {
-                    List<String> evolutions = EVOLUTION_CHAINS.get(name);
+                .<Pokemon>mapMulti((p, consumer) -> {
+                    List<Pokemon> evolutions = EVOLUTION_CHAINS.get(p);
                     if (evolutions != null) {
                         evolutions.forEach(consumer);
                     }
@@ -63,10 +65,10 @@ public final class StreamMapMulti {
      * Combines filter and map in a single {@code mapMulti} step:
      * keeps only Pokémon that have evolutions and emits their evolution count.
      */
-    public static List<Integer> filterAndCountEvolutions(List<String> pokemon) {
+    public static List<Integer> filterAndCountEvolutions(List<Pokemon> pokemon) {
         return pokemon.stream()
-                .<Integer>mapMulti((name, consumer) -> {
-                    List<String> evolutions = EVOLUTION_CHAINS.get(name);
+                .<Integer>mapMulti((p, consumer) -> {
+                    List<Pokemon> evolutions = EVOLUTION_CHAINS.get(p);
                     if (evolutions != null) {
                         consumer.accept(evolutions.size());
                     }
@@ -74,8 +76,8 @@ public final class StreamMapMulti {
                 .toList();
     }
 
-    static int evolutionChainSize(String pokemon) {
-        List<String> chain = EVOLUTION_CHAINS.get(pokemon);
+    static int evolutionChainSize(Pokemon pokemon) {
+        List<Pokemon> chain = EVOLUTION_CHAINS.get(pokemon);
         return chain == null ? 0 : chain.size();
     }
 }

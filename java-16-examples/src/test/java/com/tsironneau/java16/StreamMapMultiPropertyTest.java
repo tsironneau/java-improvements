@@ -27,8 +27,8 @@ class StreamMapMultiPropertyTest {
     }
 
     @Property
-    void total_output_size_equals_sum_of_emissions(@ForAll List<String> pokemon) {
-        List<String> expanded = StreamMapMulti.expandEvolutions(pokemon);
+    void total_output_size_equals_sum_of_emissions(@ForAll List<Pokemon> pokemon) {
+        List<Pokemon> expanded = StreamMapMulti.expandEvolutions(pokemon);
         int expectedSize = pokemon.stream()
                 .mapToInt(StreamMapMulti::evolutionChainSize)
                 .sum();

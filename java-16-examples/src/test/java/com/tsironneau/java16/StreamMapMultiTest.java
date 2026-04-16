@@ -7,34 +7,36 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.tsironneau.java16.Pokemon.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StreamMapMultiTest {
 
     @Test
     void mapMulti_expands_eevee_evolution_chain() {
-        List<String> result = StreamMapMulti.expandEvolutions(List.of("Eevee"));
-        assertEquals(List.of("Vaporeon", "Jolteon", "Flareon", "Espeon", "Umbreon"), result);
+        List<Pokemon> result = StreamMapMulti.expandEvolutions(List.of(EEVEE));
+        assertEquals(List.of(VAPOREON, JOLTEON, FLAREON, ESPEON, UMBREON), result);
     }
 
     @Test
     void mapMulti_expands_charmander_evolution_chain() {
-        List<String> result = StreamMapMulti.expandEvolutions(List.of("Charmander"));
-        assertEquals(List.of("Charmander", "Charmeleon", "Charizard"), result);
+        List<Pokemon> result = StreamMapMulti.expandEvolutions(List.of(CHARMANDER));
+        assertEquals(List.of(CHARMANDER, CHARMELEON, CHARIZARD), result);
     }
 
     @Test
     void unevolvable_pokemon_are_dropped() {
-        List<String> result = StreamMapMulti.expandEvolutions(List.of("Ditto"));
+        List<Pokemon> result = StreamMapMulti.expandEvolutions(List.of(DITTO));
         assertTrue(result.isEmpty());
     }
 
     @Test
     void mixed_pokemon_expand_known_and_drop_unknown() {
-        List<String> result = StreamMapMulti.expandEvolutions(List.of("Eevee", "Ditto", "Squirtle"));
+        List<Pokemon> result = StreamMapMulti.expandEvolutions(
+                List.of(EEVEE, DITTO, SQUIRTLE));
         assertEquals(
-                List.of("Vaporeon", "Jolteon", "Flareon", "Espeon", "Umbreon",
-                        "Squirtle", "Wartortle", "Blastoise"),
+                List.of(VAPOREON, JOLTEON, FLAREON, ESPEON, UMBREON,
+                        SQUIRTLE, WARTORTLE, BLASTOISE),
                 result
         );
     }
@@ -42,7 +44,7 @@ class StreamMapMultiTest {
     @Test
     void filter_and_count_combines_filter_and_map_in_one_step() {
         List<Integer> counts = StreamMapMulti.filterAndCountEvolutions(
-                List.of("Eevee", "Ditto", "Charmander")
+                List.of(EEVEE, DITTO, CHARMANDER)
         );
         assertEquals(List.of(5, 3), counts);
     }

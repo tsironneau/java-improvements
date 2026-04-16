@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.tsironneau.java16.Pokemon.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class DayPeriodFormatterPropertyTest {
@@ -44,8 +45,8 @@ class DayPeriodFormatterPropertyTest {
 
     @Property
     void eevee_always_evolves_into_espeon_or_umbreon(@ForAll("anyLocalTime") LocalTime time) {
-        String evolution = DayPeriodFormatter.eeveeEvolution(time);
-        assertTrue(evolution.equals("Espeon") || evolution.equals("Umbreon"),
+        Pokemon evolution = DayPeriodFormatter.eeveeEvolution(time);
+        assertTrue(evolution == ESPEON || evolution == UMBREON,
                 "Eevee should evolve into Espeon or Umbreon, got: " + evolution);
     }
 }

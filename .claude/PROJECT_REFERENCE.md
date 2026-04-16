@@ -175,6 +175,14 @@ Never constrain for convenience.
 - **Javadoc**: on classes and public methods; include thematic references (fun theme)
 - **No redundant comments** inside method bodies — code should be self-documenting
 - **Naming**: intention-revealing, no abbreviations, predicates as `isX`/`hasX`
+- **No hardcoded strings for domain values**: extract repeated string literals into enums or
+  constants. If a set of related strings represents domain concepts (e.g., character names,
+  categories, statuses), create an enum with a `displayName()` method. This provides type safety,
+  prevents typos, and centralizes definitions. Example: `Pokemon.PIKACHU` over `"Pikachu"`.
+- **Static imports for enum constants**: when a class uses enum constants heavily, use
+  `import static` to import them (e.g., `import static com.tsironneau.java16.Pokemon.*;`).
+  This allows writing `ESPEON` instead of `Pokemon.ESPEON`, improving readability when the
+  context makes the type obvious.
 - **Methods**: SRP, short (<20 lines), 0-2 parameters preferred
 - **No side effects** in pure methods
 

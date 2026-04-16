@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.tsironneau.java16.Pokemon.*;
+
 /**
  * Demonstrates the Day Period support added in Java 16 via {@code DateTimeFormatter}.
  *
@@ -25,13 +27,13 @@ public final class DayPeriodFormatter {
     private static final DateTimeFormatter AM_PM =
             DateTimeFormatter.ofPattern("a", Locale.ENGLISH);
 
-    private static final Map<String, String> PERIOD_TO_EEVEELUTION = Map.of(
-            "in the morning", "Espeon",
-            "in the afternoon", "Espeon",
-            "noon", "Espeon",
-            "in the evening", "Umbreon",
-            "at night", "Umbreon",
-            "midnight", "Umbreon"
+    private static final Map<String, Pokemon> PERIOD_TO_EEVEELUTION = Map.of(
+            "in the morning", ESPEON,
+            "in the afternoon", ESPEON,
+            "noon", ESPEON,
+            "in the evening", UMBREON,
+            "at night", UMBREON,
+            "midnight", UMBREON
     );
 
     private DayPeriodFormatter() {
@@ -69,8 +71,8 @@ public final class DayPeriodFormatter {
      * Determines which Eeveelution Eevee evolves into based on the time of day.
      * Morning/afternoon → Espeon (sunlight), evening/night → Umbreon (moonlight).
      */
-    public static String eeveeEvolution(LocalTime time) {
+    public static Pokemon eeveeEvolution(LocalTime time) {
         String period = DAY_PERIOD_FULL.format(time);
-        return PERIOD_TO_EEVEELUTION.getOrDefault(period, "Espeon");
+        return PERIOD_TO_EEVEELUTION.getOrDefault(period, ESPEON);
     }
 }

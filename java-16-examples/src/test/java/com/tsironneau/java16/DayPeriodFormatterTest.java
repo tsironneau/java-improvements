@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.tsironneau.java16.Pokemon.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class DayPeriodFormatterTest {
@@ -63,26 +64,26 @@ class DayPeriodFormatterTest {
 
     @Test
     void eevee_evolves_to_espeon_in_morning() {
-        assertEquals("Espeon", DayPeriodFormatter.eeveeEvolution(LocalTime.of(9, 0)));
+        assertEquals(ESPEON, DayPeriodFormatter.eeveeEvolution(LocalTime.of(9, 0)));
     }
 
     @Test
     void eevee_evolves_to_espeon_at_noon() {
-        assertEquals("Espeon", DayPeriodFormatter.eeveeEvolution(LocalTime.of(12, 0)));
+        assertEquals(ESPEON, DayPeriodFormatter.eeveeEvolution(LocalTime.of(12, 0)));
     }
 
     @Test
     void eevee_evolves_to_umbreon_in_evening() {
-        assertEquals("Umbreon", DayPeriodFormatter.eeveeEvolution(LocalTime.of(19, 0)));
+        assertEquals(UMBREON, DayPeriodFormatter.eeveeEvolution(LocalTime.of(19, 0)));
     }
 
     @Test
     void eevee_evolves_to_umbreon_at_night() {
-        assertEquals("Umbreon", DayPeriodFormatter.eeveeEvolution(LocalTime.of(23, 0)));
+        assertEquals(UMBREON, DayPeriodFormatter.eeveeEvolution(LocalTime.of(23, 0)));
     }
 
     @Test
     void eevee_evolves_to_umbreon_at_midnight() {
-        assertEquals("Umbreon", DayPeriodFormatter.eeveeEvolution(LocalTime.MIDNIGHT));
+        assertEquals(UMBREON, DayPeriodFormatter.eeveeEvolution(LocalTime.MIDNIGHT));
     }
 }
