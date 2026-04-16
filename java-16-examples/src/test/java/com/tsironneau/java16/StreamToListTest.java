@@ -7,12 +7,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static com.tsironneau.java16.Pokemon.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StreamToListTest {
 
+    @SuppressWarnings("DataFlowIssue")
     @Test
     void empty_stream_toList_returns_empty_unmodifiable_list() {
         List<Pokemon> result = StreamToList.toUnmodifiableList(List.of());
@@ -32,7 +33,7 @@ class StreamToListTest {
     void toList_result_cannot_be_mutated_via_remove() {
         List<Pokemon> pokedex = StreamToList.toUnmodifiableList(
                 List.of(BULBASAUR, CHARMANDER, SQUIRTLE));
-        assertThrows(UnsupportedOperationException.class, () -> pokedex.remove(0));
+        assertThrows(UnsupportedOperationException.class, pokedex::removeFirst);
     }
 
     @Test

@@ -34,6 +34,7 @@ public enum Pokemon {
     /**
      * Returns the properly capitalized display name (e.g. "Pikachu", "MissingNo").
      */
+    @SuppressWarnings("unused")
     public String displayName() {
         return displayName;
     }

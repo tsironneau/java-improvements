@@ -14,6 +14,7 @@ import static com.tsironneau.java16.Pokemon.*;
  *
  * <p>Theme: Pokémon evolution chains. A base Pokémon can expand into its full evolution line.</p>
  */
+@SuppressWarnings("unused")
 public final class StreamMapMulti {
 
     private static final Map<Pokemon, List<Pokemon>> EVOLUTION_CHAINS = Map.of(

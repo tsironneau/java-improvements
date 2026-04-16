@@ -7,8 +7,9 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 
 import java.util.List;
 
+import static com.tsironneau.java16.Pokemon.MISSING_NO;
+import static com.tsironneau.java16.Pokemon.PIKACHU;
 import static org.junit.jupiter.api.Assertions.*;
-import static com.tsironneau.java16.Pokemon.*;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StreamToListPropertyTest {
@@ -25,6 +26,7 @@ class StreamToListPropertyTest {
         assertEquals(pokedex.size(), result.size());
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Property
     void toList_result_is_unmodifiable(@ForAll List<Pokemon> pokedex) {
         List<Pokemon> result = StreamToList.toUnmodifiableList(pokedex);
