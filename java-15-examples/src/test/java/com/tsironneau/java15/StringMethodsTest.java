@@ -83,4 +83,24 @@ class StringMethodsTest {
         String raw = "\\q";
         assertThrows(IllegalArgumentException.class, raw::translateEscapes);
     }
+
+    @Property
+    void StringMethods_greet_is_equivalent_to_formatted(@ForAll String name, @ForAll int age) {
+        String template = "Hello %s, you are %d years old";
+        assertEquals(template.formatted(name, age), StringMethods.greet(template, name, age));
+    }
+
+    @Property
+    void StringMethods_normalizeIndent_is_equivalent_to_stripIndent(@ForAll String raw) {
+        assertEquals(raw.stripIndent(), StringMethods.normalizeIndent(raw));
+    }
+
+    @Property
+    void StringMethods_processEscapes_is_equivalent_to_translateEscapes(@ForAll String raw) {
+        try {
+            assertEquals(raw.translateEscapes(), StringMethods.processEscapes(raw));
+        } catch (IllegalArgumentException e) {
+            assertThrows(IllegalArgumentException.class, () -> StringMethods.processEscapes(raw));
+        }
+    }
 }
