@@ -28,7 +28,7 @@ runs:
         global_missed = 0
 
         for module in modules:
-            report_path = f'{module}/target/site/jacoco/report.xml'
+            report_path = f'{module}/target/site/jacoco/jacoco.xml'
 
             if os.path.exists(report_path):
                 try:
