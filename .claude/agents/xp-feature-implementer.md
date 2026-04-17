@@ -38,9 +38,28 @@ Implement a complete feature slice as specified in your prompt:
 
 ## Key Constraints
 
+- **Minimal Code**: Generate ONLY the code strictly necessary to demonstrate the Java feature
+  - ✅ A 10-line Record with just enough fields
+  - ✅ If additional classes are needed: create them in dedicated `.java` files
+  - ❌ Extra helper methods, utilities, or "nice-to-have" features
+  - ❌ Nested/internal classes — each class gets its own file
+  - The feature itself is the focus, not a complete system
+- **Explicit class names**: Class names MUST make the Java feature clear WITHOUT opening the file
+  - ✅ `PointRecord.java`, `RacerSealed.java`, `StreamToList.java`
+  - ❌ `FeatureClass.java`, `Example.java`
+  - See PROJECT_REFERENCE.md section 3 for naming strategy
+- **Javadoc MUST include JEP number and status** (finalized or preview)
+  - ✅ "Demonstrates Java 14 Records (JEP 359, finalized)..."
+  - ❌ "Demonstrates Records" (missing JEP info)
 - **Property-first**: Write `@Property` tests for universal invariants before `@Test` examples
 - **Default ranges**: Use default `@ForAll` ranges; constrain only for technical reasons
 - **Fun examples**: Use the module's theme for test naming and data
+- **NO magic constants**: All domain values must use enums, not hardcoded strings/numbers
+  - ❌ `"DRAGON"` or `level > 5` hardcoded
+  - ✅ `DisasterLevel.DRAGON` or `level.isHighThreat()`
+- **Readability > Concision**: Avoid nested ternaries, complex chains, one-liners
+  - ❌ `return rank == ELITE ? HIGH : rank == VETERAN ? MODERATE : LOW;`
+  - ✅ Use if-else blocks or switch for clarity, even if longer
 - **Clean Code**: Short methods, intention-revealing names, no redundant comments
 - **snake_case** test method names + `@DisplayNameGeneration` — mandatory on every test class
 

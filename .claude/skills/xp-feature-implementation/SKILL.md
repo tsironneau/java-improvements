@@ -6,6 +6,19 @@ production class + PropertyTest (jqwik) + Test (JUnit 5).
 This replaces the granular RED → GREEN → REFACTOR cycle with a single pass
 that respects the same quality constraints.
 
+## Core Principle
+
+**Minimal Code**: Generate ONLY the code strictly necessary to demonstrate the Java feature. 
+- ✅ A 10-line Record class is sufficient
+- ✅ If additional classes are needed: create them in dedicated `.java` files
+- ❌ Don't add extra methods, getters, helpers, or "nice-to-haves"
+- ❌ Don't build a full application or domain model
+- ❌ **Do NOT use nested/internal classes** as a shortcut to avoid creating separate files
+  - Inner classes hide the structure and violate separation of concerns
+  - Each class deserves its own file for clarity and testability
+
+The feature itself is the focus, not a complete system.
+
 ## Pre-requisites
 
 Before writing any code, **read the project reference**:
@@ -25,8 +38,19 @@ For jqwik details beyond the quick reference, consult:
 For each feature, implement in this order:
 
 ### 1. Production Class (`src/main/java`)
+- **Class name MUST be explicit** — make the Java feature clear without opening the file
+  - ✅ `PointRecord`, `RacerSealed`, `StreamToList`, `DisasterLevelEnum`
+  - ❌ `FeatureClass`, `Example`, `Impl`
+  - See PROJECT_REFERENCE.md §3 for naming strategy
 - Follow conventions from PROJECT_REFERENCE.md §6
-- Javadoc on class and public methods with thematic references
+- **Readability > Concision**: Avoid nested ternaries, complex chains, cryptic one-liners
+  - ❌ `return rank == ELITE ? HIGH : rank == VETERAN ? MODERATE : LOW;`
+  - ✅ Use if-else or switch blocks, even if longer
+- **Javadoc MUST explain only the Java feature, not business logic**
+  - **MUST include JEP number and status** (finalized or preview)
+  - ✅ "Demonstrates Java 14 Records (JEP 359, finalized): immutability, compact constructors, generated methods"
+  - ❌ "Stores a point's coordinates" (business detail)
+  - Javadoc can use thematic references, but focus must be on the Java feature
 - Private constructor for utility classes
 - Keep methods short, focused, intention-revealing
 
@@ -65,6 +89,7 @@ All three must pass before reporting success.
 ## Quality Checklist
 
 Before declaring done, verify:
+- [ ] **NO magic constants** — all domain values are enums, not hardcoded strings/numbers
 - [ ] Property tests cover universal invariants (not just happy path)
 - [ ] Unit tests cover edge cases and thematic examples
 - [ ] `@DisplayNameGeneration` on every test class
@@ -72,19 +97,19 @@ Before declaring done, verify:
 - [ ] No redundant comments in code
 - [ ] Methods are short (<20 lines) and focused
 - [ ] Naming is intention-revealing
-- [ ] Javadoc on production class and public methods
+- [ ] Javadoc on production class and public methods (with JEP + status)
 - [ ] Tests use fun, thematic examples (not generic "foo", "bar")
 
 ## Output Format
 
 Report back with:
 ```
-## Feature: [name]
+## Feature: [Explicit Feature Name]
 
 ### Files Created/Modified
-- `src/main/java/.../FeatureClass.java` — [brief description]
-- `src/test/java/.../FeaturePropertyTest.java` — [N] @Property tests
-- `src/test/java/.../FeatureTest.java` — [N] @Test methods
+- `src/main/java/.../ExplicitFeatureName.java` — [brief description]
+- `src/test/java/.../ExplicitFeatureNamePropertyTest.java` — [N] @Property tests
+- `src/test/java/.../ExplicitFeatureNameTest.java` — [N] @Test methods
 
 ### Test Results
 - Total tests: [N]

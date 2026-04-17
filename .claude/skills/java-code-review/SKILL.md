@@ -82,6 +82,26 @@ This project is pedagogical. Examples should be memorable and slightly playful:
 - If a file is too short or trivial to review meaningfully, say so briefly.
 - If uncertain whether a `@Test` could be a `@Property`, explain the reasoning and let the developer decide.
 - Respect module structure: don't suggest jqwik in modules where it is not available (`java-11`, `java-12`, `java-13`).
+- **CRITICAL**: Flag magic constants — all domain values must be enums, not hardcoded.
+  - ✅ `enum DisasterLevel { WOLF, TIGER, DEMON, DRAGON }`
+  - ❌ `if (level > 5)` or `"DRAGON"` string literal
+  - See clean-code-criteria.md for details
+- **CRITICAL**: Flag poor readability — readability > concision in teaching code.
+  - ❌ Nested ternaries, complex stream chains, one-liners that hide logic
+  - ✅ If-else blocks, switch statements, intermediate variables for clarity
+  - Example: Suggest breaking up `rank == ELITE ? HIGH : rank == VETERAN ? MODERATE : LOW` into a readable if-else block
+- **CRITICAL**: Flag excessive code — this project demonstrates features, not builds systems.
+  - ✅ Minimal, focused code that shows the feature
+  - ✅ If classes are needed, each gets its own `.java` file
+  - ❌ Extra helpers, utilities, or "nice-to-have" enhancements
+  - ❌ Nested/internal classes (flag these and suggest separate files)
+  - ❌ Code that obscures the feature with surrounding infrastructure
+- **CRITICAL**: Flag Javadoc that:
+  - Explains business logic instead of the Java feature
+  - Missing JEP number and status (finalized or preview)
+  - ✅ "Demonstrates Java 14 Records (JEP 359, finalized): syntax, immutability, accessors"
+  - ❌ "Stores a point's coordinates" (business detail)
+  - ❌ "Demonstrates Records" (missing JEP info)
 
 ## Additional Resources
 

@@ -27,6 +27,8 @@ Each module picks a **fun theme** (anime, gaming) to make examples engaging and 
 | `java-14-examples` | One Punch Man | Records, Pattern Matching instanceof, TextBlocks, Switch expressions | main+test |
 | `java-15-examples` | Mario Kart | Sealed classes/interfaces, Records implementing sealed, String methods (formatted, stripIndent, translateEscapes) | main+test |
 | `java-16-examples` | Pokémon | Stream.toList(), Stream.mapMulti(), Local Records, Day Period formatting | main+test |
+| `java-17-examples` | The Legend of Zelda | Sealed classes (JEP 409, finalized), Pattern Matching for switch (JEP 406, preview) | main+test |
+| `java-18-examples` | The Witcher | Pattern Matching for switch with guarded patterns (JEP 420, preview), UTF-8 by Default (JEP 400) | main+test |
 
 **Important**: java-11/12/13 are test-only (no `src/main/java`). From java-14 onwards, follow
 the main+test split pattern.
@@ -40,15 +42,39 @@ java-{N}-examples/
 ├── pom.xml
 ├── src/
 │   ├── main/java/com/tsironneau/java{N}/
-│   │   ├── FeatureClass.java
+│   │   ├── ExplicitFeatureName.java        ← E.g., PointRecord, RacerSealed, StreamToList
 │   │   └── ...
 │   └── test/java/com/tsironneau/java{N}/
-│       ├── FeatureClassPropertyTest.java   ← jqwik @Property tests
-│       ├── FeatureClassTest.java           ← JUnit @Test methods
+│       ├── ExplicitFeatureNamePropertyTest.java   ← jqwik @Property tests
+│       ├── ExplicitFeatureNameTest.java           ← JUnit @Test methods
 │       └── ...
 ```
 
 **Package**: `com.tsironneau.java{N}` (NOT `io.github.tsironneau`)
+
+**Class Naming Strategy**: Use one of these approaches to make the Java feature explicit WITHOUT opening the class:
+
+### Option 1: Feature-in-Class-Name (Recommended for single feature)
+```
+PointRecord.java          ← "Record" makes it clear what feature is demonstrated
+RacerSealed.java          ← "Sealed" indicates sealed class/interface
+StreamToList.java         ← "Stream" + method name shows the feature
+DisasterLevelEnum.java    ← "Enum" is explicit
+```
+
+### Option 2: Package-Based Organization (For multiple features in one version)
+```
+com.tsironneau.java{N}.records/
+  ├── PointRecord.java
+  ├── PersonRecord.java
+  └── PersonRecordTest.java
+
+com.tsironneau.java{N}.sealed/
+  ├── RacerSealed.java
+  └── RacerSealedTest.java
+```
+
+**Preference**: Option 1 (feature in class name) is simpler and always clear. Use Option 2 only if a version has many features and organization becomes unwieldy.
 
 ---
 
@@ -96,8 +122,12 @@ Root pom.xml `<modules>` block must include the new module.
 ## 5. Testing Conventions
 
 ### File Naming
-- `FeaturePropertyTest.java` — jqwik `@Property` tests (invariants)
-- `FeatureTest.java` — JUnit `@Test` methods (specific examples, edge cases)
+- `ExplicitFeatureNamePropertyTest.java` — jqwik `@Property` tests (invariants)
+  - Example: `PointRecordPropertyTest.java`, `RacerSealedPropertyTest.java`
+- `ExplicitFeatureNameTest.java` — JUnit `@Test` methods (specific examples, edge cases)
+  - Example: `PointRecordTest.java`, `RacerSealedTest.java`
+
+**Rule**: The class name MUST make clear which Java feature is demonstrated (Records, Sealed classes, Stream methods, etc.)
 
 ### Test Class Structure
 ```java
@@ -169,21 +199,39 @@ Never constrain for convenience.
 
 ## 6. Production Code Conventions
 
+- **Minimal code**: Generate ONLY what's necessary to demonstrate the feature
+  - ✅ A 10-line Record with essential fields
+  - ❌ Extra helpers, utilities, or "nice-to-have" methods
+  - ❌ Nested/internal classes to avoid creating separate files
+  - **If additional classes are needed**: Create them in dedicated `.java` files, not as inner classes
+  - The feature is the focus, not a complete system
 - **Utility classes**: `private` constructor, `final` class, `static` methods
 - **Records**: for immutable data carriers; compact constructors for validation
 - **Sealed interfaces/classes**: for closed hierarchies with exhaustive pattern matching
-- **Javadoc**: on classes and public methods; include thematic references (fun theme)
+- **Javadoc**: on classes and public methods
+  - **MUST explain the Java feature being demonstrated**, not business logic
+  - **MUST include JEP number and status** (finalized or preview)
+  - ✅ "Demonstrates Java 14 Records (JEP 359, finalized). Shows immutability guarantees, compact constructors, and auto-generated accessors."
+  - ✅ "Uses pattern matching instanceof (JEP 394, finalized) to narrow types in conditional branches."
+  - ❌ "A container for storing user information" (business logic, not feature)
+  - Include thematic references (fun theme) to engage readers
 - **No redundant comments** inside method bodies — code should be self-documenting
 - **Naming**: intention-revealing, no abbreviations, predicates as `isX`/`hasX`
-- **No hardcoded strings for domain values**: extract repeated string literals into enums or
-  constants. If a set of related strings represents domain concepts (e.g., character names,
-  categories, statuses), create an enum with a `displayName()` method. This provides type safety,
-  prevents typos, and centralizes definitions. Example: `Pokemon.PIKACHU` over `"Pikachu"`.
-- **Static imports for enum constants**: when a class uses enum constants heavily, use
-  `import static` to import them (e.g., `import static com.tsironneau.java16.Pokemon.*;`).
-  This allows writing `ESPEON` instead of `Pokemon.ESPEON`, improving readability when the
-  context makes the type obvious.
+- **NO magic constants** (numbers, strings). All domain values MUST use enums or named constants:
+  - ❌ `if (level > 5)` or `"DRAGON"` hardcoded in code
+  - ✅ `if (level.isHighThreat())` using an enum: `enum DisasterLevel { WOLF, TIGER, DEMON, DRAGON, GOD }`
+  - **For domain concepts** (character names, categories, statuses): create enums with a `displayName()` method
+    - Example: `enum Pokemon { PIKACHU("Pikachu"), ESPEON("Espeon"); ... }`
+    - Provides: type safety, prevents typos, centralizes definitions
+  - **For technical constants** (timeouts, capacities): use `static final` with intention-revealing names
+- **Static imports for enum constants**: when using enum constants heavily, import them:
+  - `import static com.tsironneau.java16.Pokemon.*;`
+  - Allows writing `ESPEON` instead of `Pokemon.ESPEON`, improving readability
 - **Methods**: SRP, short (<20 lines), 0-2 parameters preferred
+- **Readability > Concision**: Always prefer clarity over one-liners
+  - ❌ `return rank == ELITE ? HIGH : rank == VETERAN ? MODERATE : LOW;` (nested ternaries)
+  - ✅ Use if-else blocks or switch statements for multi-branch logic
+  - Avoid: chained ternaries, complex stream chains, overly condensed expressions
 - **No side effects** in pure methods
 
 ---
@@ -226,6 +274,8 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 | java-14 | One Punch Man | DisasterLevel enum (WOLF, TIGER, DEMON, DRAGON, GOD) |
 | java-15 | Mario Kart | Racer sealed interface (Mario, Bowser, Toad), RacerCategory |
 | java-16 | Pokémon | Pokédex, evolution chains, Eevee/Espeon/Umbreon, trainer party |
+| java-17 | The Legend of Zelda | EnemySealed (Moblin, Octorok, Stalfos), ThreatLevel (LOW, MODERATE, HIGH) |
+| java-18 | The Witcher | MonsterSealed (Drowner, Wraith, Leshen, Vampire), BestiarySwitch, RuneTranslatorUtf8 |
 
 When creating a new module, pick a different fun theme (anime, gaming, movies, etc.).
 

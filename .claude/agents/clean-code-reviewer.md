@@ -37,5 +37,30 @@ Review recently written or modified code. Apply every criterion from the skill f
 ## Review Pillars
 
 1. **Clean Code compliance** — naming, SRP, method length, no redundant comments
+   - **CRITICAL**: NO magic constants — all domain values must be enums
+     - ✅ `enum DisasterLevel { WOLF, TIGER, DEMON, DRAGON }`
+     - ❌ `if (level > 5)` or `"DRAGON"` hardcoded
+     - See clean-code-criteria.md for detailed rules
+   - **CRITICAL**: Readability > Concision
+     - ❌ Nested ternaries: `rank == ELITE ? HIGH : rank == VETERAN ? MODERATE : LOW`
+     - ✅ If-else blocks or switch for clarity
+     - ❌ Complex stream chains with multiple operations
+     - ✅ Intermediate variables for readability
+     - See clean-code-criteria.md for detailed rules
+   - **CRITICAL**: Minimal code — only what's necessary to demonstrate the feature
+     - ✅ A 10-line Record class showing the feature
+     - ✅ If needed, additional classes in dedicated `.java` files
+     - ❌ Extra helpers, utilities, or "nice-to-have" methods
+     - ❌ Nested/internal classes (each class gets its own file)
+     - ❌ Code that hides the feature with surrounding infrastructure
+     - See clean-code-criteria.md for detailed rules
+   - **CRITICAL**: Class names MUST make the Java feature explicit (see PROJECT_REFERENCE.md §3)
+     - ✅ `PointRecord`, `RacerSealed`, `StreamToList` — feature is clear
+     - ❌ `FeatureClass`, `Example` — unclear what's being illustrated
+   - **CRITICAL**: Javadoc MUST explain the Java feature, NOT business logic
+     - **MUST include JEP number and status** (finalized or preview)
+     - ✅ "Demonstrates Java 14 Records (JEP 359, finalized): immutability and accessors"
+     - ❌ "Stores a point's coordinates" (business detail, missing JEP)
+     - See clean-code-criteria.md for detailed rules
 2. **Test strategy** — @Property for invariants, @Test for examples; default ranges rule
 3. **Fun factor** — thematic examples, engaging naming, pedagogical quality
